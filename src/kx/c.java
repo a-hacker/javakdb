@@ -509,7 +509,12 @@ public class c{
   private void uncompress(){
     int n=0, r=0, f=0, s=8, p=s;
     short i=0;
-    byte[] dst=new byte[ri()];
+    int msgLength = ri();
+    long maxAvailable = (long) (Runtime.getRuntime().freeMemory() * .9); //freeMemory is an approximation so lets be safe
+    if (msgLength > maxAvailable){
+      throw new IOException("Size of response is too large to read");
+    }
+    byte[] dst=new byte[msgLength];
     int d=j;
     int[] aa=new int[256];
     while(s<dst.length){
@@ -1242,7 +1247,12 @@ public class c{
       if(b[1]==1) // msg types are 0 - async, 1 - sync, 2 - response
         sync++;   // an incoming sync message means the remote will expect a response message
       j=4;
-      b=Arrays.copyOf(b,ri());
+      int msgLength = ri();
+      long maxAvailable = (long) (Runtime.getRuntime().freeMemory() * .9); //freeMemory is an approximation so lets be safe
+      if (msgLength > maxAvailable){
+        throw new IOException("Size of response is too large to read");
+      }
+      b=Arrays.copyOf(b,msgLength);
       i.readFully(b,8,b.length-8); // read the incoming message in full
       return new Object[]{b[1],deserialize(b)};
     }
