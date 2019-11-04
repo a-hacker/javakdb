@@ -512,7 +512,7 @@ public class c{
     int msgLength = ri();
     long maxAvailable = (long) (Runtime.getRuntime().freeMemory() * .9); //freeMemory is an approximation so lets be safe
     if (msgLength > maxAvailable){
-      throw new IOException("Size of response is too large to read");
+      throw new RuntimeException("Size of response is too large to read");
     }
     byte[] dst=new byte[msgLength];
     int d=j;
@@ -1250,7 +1250,7 @@ public class c{
       int msgLength = ri();
       long maxAvailable = (long) (Runtime.getRuntime().freeMemory() * .9); //freeMemory is an approximation so lets be safe
       if (msgLength > maxAvailable){
-        throw new IOException("Size of response is too large to read");
+        throw new RuntimeException("Size of response is too large to read");
       }
       b=Arrays.copyOf(b,msgLength);
       i.readFully(b,8,b.length-8); // read the incoming message in full
